@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     './dist/clientstate.redis.js': [
-                        'lib/JSONP-min.js', 'bower_components/oauth-js/dist/oauth.min.js', 'js/clientstate.js']
+                        'lib/JSONP.js', 'bower_components/oauth-js/dist/oauth.min.js', 'js/clientstate.js']
                 }
             }
         },
