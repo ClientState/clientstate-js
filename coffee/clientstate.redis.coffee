@@ -28,11 +28,14 @@ class ClientState
 
 class ClientStateRedis extends ClientState
 
-  make_request: () ->
+  make_request: (method, url, cb) ->
     request = new XMLHttpRequest()
+    request.open(method, url)
     request.setRequestHeader("access_token", @access_token)
     request.setRequestHeader("provider", @provider)
     request.setRequestHeader("serviceid", @serviceid)
+    request.onload = (e) ->
+      cb null, request
     return request
 
   get: () ->
@@ -42,13 +45,10 @@ class ClientStateRedis extends ClientState
       # args must be an array
       [command, key, args, cb] = arguments
 
-    request = @make_request()
     url = "#{@address}/#{command}/#{key}"
     if args isnt undefined
       url += "?args=#{args.join ','}"
-    request.open 'GET', url, true
-    request.onload = (e) ->
-      cb null, request
+    request = @make_request "GET", url, cb
     request.send()
 
   post: () ->
@@ -58,13 +58,10 @@ class ClientStateRedis extends ClientState
     if arguments.length is 5
       [command, key, value, args, cb] = arguments
 
-    request = @make_request()
     url = "#{@address}/#{command}/#{key}"
     if args isnt undefined
       url += "?args=#{args.join ','}"
-    request.open 'POST', url, true
-    request.onload = (e) ->
-      cb null, request
-    request.send value
+    request = @make_request 'POST', url, cb
+    request.send(value)
 
 window.ClientStateRedis = ClientStateRedis

@@ -41,12 +41,16 @@ ClientStateRedis = (function(_super) {
     return ClientStateRedis.__super__.constructor.apply(this, arguments);
   }
 
-  ClientStateRedis.prototype.make_request = function() {
+  ClientStateRedis.prototype.make_request = function(method, url, cb) {
     var request;
     request = new XMLHttpRequest();
+    request.open(method, url);
     request.setRequestHeader("access_token", this.access_token);
     request.setRequestHeader("provider", this.provider);
     request.setRequestHeader("serviceid", this.serviceid);
+    request.onload = function(e) {
+      return cb(null, request);
+    };
     return request;
   };
 
@@ -58,15 +62,11 @@ ClientStateRedis = (function(_super) {
     if (arguments.length === 4) {
       command = arguments[0], key = arguments[1], args = arguments[2], cb = arguments[3];
     }
-    request = this.make_request();
     url = "" + this.address + "/" + command + "/" + key;
     if (args !== void 0) {
       url += "?args=" + (args.join(','));
     }
-    request.open('GET', url, true);
-    request.onload = function(e) {
-      return cb(null, request);
-    };
+    request = make_request("GET", url, cb);
     return request.send();
   };
 
@@ -78,15 +78,11 @@ ClientStateRedis = (function(_super) {
     if (arguments.length === 5) {
       command = arguments[0], key = arguments[1], value = arguments[2], args = arguments[3], cb = arguments[4];
     }
-    request = this.make_request();
     url = "" + this.address + "/" + command + "/" + key;
     if (args !== void 0) {
       url += "?args=" + (args.join(','));
     }
-    request.open('POST', url, true);
-    request.onload = function(e) {
-      return cb(null, request);
-    };
+    request = this.make_request('POST', url, cb);
     return request.send(value);
   };
 
