@@ -2,7 +2,7 @@ ClienStateRedisJS
 =================
 
 Run a clientstate-redis container from a clienstate-master instance,
-then you can use ttis library to talk to Redis from a static webpage.
+then you can use this library to talk to Redis from a static webpage.
 
 Installation
 ------------
