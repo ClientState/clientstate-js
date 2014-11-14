@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "istanbul cover jasmine-node tests/unit/spec"
+    "test": "grunt test"
   },
   "author": "clientstate",
   "license": "apache2",

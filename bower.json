@@ -1,6 +1,6 @@
 {
   "name": "clientstate-redis-js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "authors": [
     "Skylar Saveland <skylar.saveland@gmail.com>"
   ],
@@ -16,11 +16,18 @@
   "license": "Apache2",
   "homepage": "http://clientstate.io",
   "ignore": [
-    "**/.*",
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    ".gitignore",
+    "Gruntfile.js",
+    "bower.json",
+    "package.json",
+    "js",
+    "coverage",
+    "karma.conf.js",
+    "coffee"
   ],
   "dependencies": {
     "oauth-js": "~0.2.4"

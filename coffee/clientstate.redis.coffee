@@ -53,10 +53,10 @@ class ClientStateRedis extends ClientState
 
   post: () ->
     # must supply callback as last arg
-    if arguments.length is 5
-      [command, key, value, args, cb] = arguments
     if arguments.length is 4
       [command, key, value, cb] = arguments
+    if arguments.length is 5
+      [command, key, value, args, cb] = arguments
 
     request = @make_request()
     url = "#{@address}/#{command}/#{key}"

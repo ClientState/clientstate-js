@@ -72,11 +72,11 @@ ClientStateRedis = (function(_super) {
 
   ClientStateRedis.prototype.post = function() {
     var args, cb, command, key, request, url, value;
-    if (arguments.length === 5) {
-      command = arguments[0], key = arguments[1], value = arguments[2], args = arguments[3], cb = arguments[4];
-    }
     if (arguments.length === 4) {
       command = arguments[0], key = arguments[1], value = arguments[2], cb = arguments[3];
+    }
+    if (arguments.length === 5) {
+      command = arguments[0], key = arguments[1], value = arguments[2], args = arguments[3], cb = arguments[4];
     }
     request = this.make_request();
     url = "" + this.address + "/" + command + "/" + key;
