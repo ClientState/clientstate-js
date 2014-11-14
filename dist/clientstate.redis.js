@@ -66,7 +66,7 @@ ClientStateRedis = (function(_super) {
     if (args !== void 0) {
       url += "?args=" + (args.join(','));
     }
-    request = make_request("GET", url, cb);
+    request = this.make_request("GET", url, cb);
     return request.send();
   };
 

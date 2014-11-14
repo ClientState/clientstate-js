@@ -95,7 +95,6 @@ module.exports = function(grunt) {
 
     // Default task.
     grunt.registerTask('default', gruntConf.taskDefault);
-    // no uglify for test?
-    grunt.registerTask('test', ['coffee', 'browserify', 'coverage'])
+    grunt.registerTask('test', ['coffee', 'concat', 'browserify', 'uglify', 'coverage'])
 
 };
