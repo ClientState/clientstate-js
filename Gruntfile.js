@@ -17,12 +17,10 @@ module.exports = function(grunt) {
             }
         },
         coffee: {
-            default: {
-                expand: true,
-                cwd: 'coffee',
-                src: ['**/*.coffee'],
-                dest: 'js',
-                ext: '.js',
+            compile: {
+                files: {
+                    "js/clientstate.redis.js": "coffee/clientstate.redis.coffee"
+                },
                 options: {
                     bare: true
                 }
@@ -35,18 +33,26 @@ module.exports = function(grunt) {
                 }
             }
         },
+        concat: {
+            options: {
+              separator: ';',
+            },
+            dist: {
+              src: ['bower_components/oauth-js/dist/oauth.min.js', 'js/clientstate.redis.js'],
+              dest: 'dist/clientstate.redis.js',
+            }
+        },
         browserify: {
             dist: {
                 files: {
-                    './dist/clientstate.redis.js': [
-                        'lib/JSONP.js', 'bower_components/oauth-js/dist/oauth.min.js', 'js/clientstate.js']
+                    './dist/clientstate.redis.min.js': ['dist/clientstate.redis.js']
                 }
             }
         },
         uglify: {
             my_target: {
                 files: {
-                    './dist/clientstate.redis.min.js': ['dist/clientstate.redis.js']
+                    './dist/clientstate.redis.min.js': ['dist/clientstate.redis.min.js']
                 }
             }
         },
@@ -62,7 +68,7 @@ module.exports = function(grunt) {
             all: ['tests/unit/spec/']
         },
 
-        taskDefault: ['coffee', 'browserify', 'uglify']
+        taskDefault: ['coffee', 'concat', 'browserify', 'uglify']
     };
 
     grunt.initConfig(gruntConf);
@@ -74,17 +80,22 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-jasmine-node');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.registerTask('coverage', 'Creates a tests coverage report', function() {
         var exec = require('child_process').exec;
         var done = this.async();
-        exec('npm test', function(error, stdout, stderr) {
-            console.log("Coverage report should be generated in ./coverage/lcov-report/index.html");
+        exec('./node_modules/karma/bin/karma start karma.conf.js', function(error, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+            console.log("Coverage report(s) available in coverage dir");
             done();
         });
     });
 
     // Default task.
     grunt.registerTask('default', gruntConf.taskDefault);
+    // no uglify for test?
+    grunt.registerTask('test', ['coffee', 'browserify', 'coverage'])
 
 };

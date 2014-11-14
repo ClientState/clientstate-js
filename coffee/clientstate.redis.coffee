@@ -1,50 +1,55 @@
 class ClientState
 
-  constructor: (@address, @clientid) ->
-    # user gave us github app secret/id on the server
-    # we set them up a redis with an oauth endpoint
-    # for local testing @address might be:
-    #     "http://localhost:3000"
-    # and @clientid might be
-    #     b6d50cdc7d9372561081
-    #git
-    # this will be populated after successful github redirect
-    # TODO - cache in localStorage
-    #@access_token = getParams()["access_token"] # or localStorage
+  constructor: (@serviceid, @address="http://api.clientstate.io") ->
+    # @serviceid is the uuid given by the clientstate-master
+    # instance given by the optional @address argument
 
-  auth_popup: () ->
-    if arguments.length is 0
-      provider = "github"
-      cb = (provider_data) ->
-        console.log provider_data
-    if arguments.length is 1
-      provider = "github"
-      cb = arguments[0]
+  auth_popup: (@provider, @clientid, cb) ->
+    # cb should have signature (err, provider_data)
+    # @access_token will be populated after successful OAuth
+    # TODO - cache in localStorage? logout?
+
     if arguments.length is 2
-      [provider, cb] = arguments
+      # default callback for debugging
+      cb = (err, provider_data) ->
+        console.log arguments
+
     OAuth.initialize @clientid
     OAuth.setOAuthdURL @address
     self = this
     OAuth.popup provider, (err, provider_data) ->
       if err?
-        console.log err.stack
+        cb err
+        return
       self.access_token = provider_data.access_token
-      cb provider_data
+      cb null, provider_data
     return
 
 
 class ClientStateRedis extends ClientState
+
+  make_request: () ->
+    request = new XMLHttpRequest()
+    request.setRequestHeader("access_token", @access_token)
+    request.setRequestHeader("provider", @provider)
+    request.setRequestHeader("serviceid", @serviceid)
+    return request
+
   get: () ->
     if arguments.length is 3
       [command, key, cb] = arguments
     if arguments.length is 4
-      [command, key, args, cb] = arguments
-    url = "#{@address}/#{command}/#{key}?access_token=#{@access_token}&jsonp"
-    if args isnt undefined
       # args must be an array
-      url += "&args=#{args.join ','}"
-    console.log url, cb
-    JSONP url, cb
+      [command, key, args, cb] = arguments
+
+    request = @make_request()
+    url = "#{@address}/#{command}/#{key}"
+    if args isnt undefined
+      url += "?args=#{args.join ','}"
+    request.open 'GET', url, true
+    request.onload = (e) ->
+      cb null, request
+    request.send()
 
   post: () ->
     # must supply callback as last arg
@@ -52,15 +57,14 @@ class ClientStateRedis extends ClientState
       [command, key, value, args, cb] = arguments
     if arguments.length is 4
       [command, key, value, cb] = arguments
-    request = new XMLHttpRequest()
-    params = "action=something"
-    url = "#{@address}/#{command}/#{key}?access_token=#{@access_token}"
+
+    request = @make_request()
+    url = "#{@address}/#{command}/#{key}"
     if args isnt undefined
-      url += "&args=#{args.join ','}"
+      url += "?args=#{args.join ','}"
     request.open 'POST', url, true
-    request.onreadystatechange = (a, b, c) ->
-      if request.readyState is 4
-        cb()
+    request.onload = (e) ->
+      cb null, request
     request.send value
 
 window.ClientStateRedis = ClientStateRedis
