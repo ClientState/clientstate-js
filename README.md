@@ -1,7 +1,7 @@
-ClienStateRedisJS
-=================
+ClientState JS Client
+====================
 
-Run a clientstate-redis container from a clienstate-master instance,
+Launch a clientstate-redis App from a clienstate-master instance,
 then you can use this library to talk to Redis from a static webpage.
 
 Installation
