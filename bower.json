@@ -1,17 +1,18 @@
 {
-  "name": "clientstate-redis-js",
+  "name": "clientstate-js",
   "version": "0.0.1",
   "authors": [
     "Skylar Saveland <skylar.saveland@gmail.com>"
   ],
-  "description": "Talk to redis without a server?",
-  "main": "dist/clientstate.redis.min.js",
+  "description": "Talk to the ClientState API from the browser!",
+  "main": "dist/clientstate.min.js",
   "moduleType": [
     "globals"
   ],
   "keywords": [
     "redis",
-    "hotness"
+    "hotness",
+    "clientstate"
   ],
   "license": "Apache2",
   "homepage": "http://clientstate.io",

@@ -19,7 +19,8 @@ module.exports = function(grunt) {
         coffee: {
             compile: {
                 files: {
-                    "js/clientstate.redis.js": "coffee/clientstate.redis.coffee"
+                    "js/clientstate.js": "coffee/clientstate.coffee",
+                    "tests/clientstate-test.js": "tests/clientstate-test.coffee"
                 },
                 options: {
                     bare: true
@@ -38,21 +39,21 @@ module.exports = function(grunt) {
               separator: ';',
             },
             dist: {
-              src: ['bower_components/oauth-js/dist/oauth.min.js', 'js/clientstate.redis.js'],
-              dest: 'dist/clientstate.redis.js',
+              src: ['bower_components/oauth-js/dist/oauth.min.js', 'js/clientstate.js'],
+              dest: 'dist/clientstate.js',
             }
         },
         browserify: {
             dist: {
                 files: {
-                    './dist/clientstate.redis.min.js': ['dist/clientstate.redis.js']
+                    './dist/clientstate.min.js': ['dist/clientstate.js']
                 }
             }
         },
         uglify: {
             my_target: {
                 files: {
-                    './dist/clientstate.redis.min.js': ['dist/clientstate.redis.min.js']
+                    './dist/clientstate.min.js': ['dist/clientstate.min.js']
                 }
             }
         },

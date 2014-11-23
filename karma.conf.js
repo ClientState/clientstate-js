@@ -5,13 +5,13 @@ module.exports = function(config) {
     files: [
       //'lib/JSONP.js',
       //'bower_components/oauth-js/dist/oauth.min.js',
-      'js/clientstate.redis.js',
+      'js/clientstate.js',
       'bower_components/chai/chai.js',
       'tests/*.js'
     ],
     browsers: ['Chrome'],
     singleRun: true,
     reporters: ['progress', 'coverage'],
-    preprocessors: { 'js/clientstate.redis.js': ['coverage'] }
+    preprocessors: { 'js/clientstate.js': ['coverage'] }
   });
 };

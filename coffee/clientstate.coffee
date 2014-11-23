@@ -1,8 +1,10 @@
 class ClientState
 
-  constructor: (@serviceid, @address="http://api.clientstate.io") ->
-    # @serviceid is the uuid given by the clientstate-master
-    # instance given by the optional @address argument
+  constructor: (@appid, @host="clientstate.io") ->
+    # @appid is the uuid given by the clientstate-master instance
+    # running at the optional @host argument
+    # https required
+    @address = "https://#{@appid}.#{@host}"
 
   auth_popup: (@provider, @clientid, cb) ->
     # cb should have signature (err, provider_data)
@@ -25,15 +27,15 @@ class ClientState
       cb null, provider_data
     return
 
-
-class ClientStateRedis extends ClientState
+  # redis
+  #######
 
   make_request: (method, url, cb) ->
     request = new XMLHttpRequest()
     request.open(method, url)
     request.setRequestHeader("access_token", @access_token)
     request.setRequestHeader("provider", @provider)
-    request.setRequestHeader("serviceid", @serviceid)
+
     request.onload = (e) ->
       cb null, request
     return request
@@ -64,4 +66,4 @@ class ClientStateRedis extends ClientState
     request = @make_request 'POST', url, cb
     request.send(value)
 
-window.ClientStateRedis = ClientStateRedis
+window.ClientState = ClientState

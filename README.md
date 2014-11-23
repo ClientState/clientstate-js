@@ -8,13 +8,13 @@ Installation
 ------------
 
     # TODO?
-    bower install clientstate-redis-js
+    bower install clientstate-js
 
 
 Usage
 -----
 
-    csr = new ClientStateRedis("uuid", "http://localhost:4444");
+    csr = new ClientState("uuid", "clientstate.local");
     csr.auth_popup("github", "client-id", function(err, provider_data) {
         // csr.access_token is now set to provider_data.access_token
     });
