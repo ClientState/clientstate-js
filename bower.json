@@ -31,7 +31,7 @@
     "coffee"
   ],
   "dependencies": {
-    "oauth-js": "~0.2.4"
+    "oauth-js": "~0.3.0"
   },
   "devDependencies": {
     "chai": "~1.10.0"
