@@ -10,26 +10,42 @@ Installation
     # TODO?
     bower install clientstate-js
 
+Setup
+-----
+
+Create a Github app: https://github.com/settings/applications
+If you are using clientstate.io, the OAuth callback url will be (TODO):
+
+    https://<GITHUB_CLIENT_ID.clientstate.io/auth_callback/github
+
+A [clientstate-master](https://github.com/ClientState/clientstate-master)
+instance can be created anywhere, for instance, https://clientstate.local/
+In that case, the OAuth callback url for the Github app will be:
+
+    https://<GITHUB_CLIENT_ID.clientstate.local/auth_callback/github
+
+Go to your clienstate-master instance (clientstate.local or clientstate.io)
+and input you Github credentials in a new app and launch the service.
 
 Usage
 -----
 
-    csr = new ClientState("uuid", "clientstate.local");
-    csr.auth_popup("github", "client-id", function(err, provider_data) {
+    cs = new ClientState("GITHUB_CLIENT_ID", "clientstate.local");
+    cs.github_auth_popup(function(err, provider_data) {
         // csr.access_token is now set to provider_data.access_token
     });
 
-Once the auth_popup has comeback, csr.access_token will exist.
+Once the auth_popup has comeback, `cs.access_token` will exist.
 You can then make calls to the get and post methods to read and write data,
 respectively.
 
     // get the value of the string, foobar
-    csr.get("GET", "foobar", function(err, req) {
+    cs.get("GET", "foobar", function(err, req) {
         console.log(req.responseText);
     })
 
     // write the value of the string, foobar, to "baz"
-    csr.post("SET", "foobar", "baz", function(err, req) {
+    cs.post("SET", "foobar", "baz", function(err, req) {
         console.log(req.responseText);
     })
 

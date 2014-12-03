@@ -83,6 +83,13 @@ describe 'Call ClientStateRedis.auth_popup', () ->
       chai.assert.equal err.stack, "this is an error stack"
       done()
 
+  it 'call to github_auth_popup is works', (done) ->
+    cs = new ClientState("GITHUB_CID")
+    cs.github_auth_popup (err, provider_data) ->
+      cs.get "GET", "foobar", (err, req) ->
+        chai.assert.equal(req.url, 'https://GITHUB_CID.clientstate.io/GET/foobar')
+        done()
+
 
 describe 'ClientStateRedis.get method', () ->
   # command, key, callback

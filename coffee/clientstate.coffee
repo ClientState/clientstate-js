@@ -6,6 +6,11 @@ class ClientState
     # https required
     @address = "https://#{@appid}.#{@host}"
 
+  github_auth_popup: (cb) ->
+    # support other providers later with different clientids
+    # for, now only github and the appid is the clientid
+    @auth_popup "github", @appid, cb
+
   auth_popup: (@provider, @clientid, cb) ->
     # cb should have signature (err, provider_data)
     # @access_token will be populated after successful OAuth

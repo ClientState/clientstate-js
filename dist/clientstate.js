@@ -9,6 +9,10 @@ ClientState = (function() {
     this.address = "https://" + this.appid + "." + this.host;
   }
 
+  ClientState.prototype.github_auth_popup = function(cb) {
+    return this.auth_popup("github", this.appid, cb);
+  };
+
   ClientState.prototype.auth_popup = function(provider, clientid, cb) {
     var self;
     this.provider = provider;

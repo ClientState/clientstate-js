@@ -97,13 +97,23 @@ describe('Call ClientStateRedis.auth_popup', function() {
     csr.auth_popup("github", "github-client-id");
     return done();
   });
-  return it('handles error from popup', function(done) {
+  it('handles error from popup', function(done) {
     var csr;
     OAuth.err = true;
     csr = new ClientState("uuid", "localhost:4444");
     return csr.auth_popup("github", "clientid", function(err, provider_data) {
       chai.assert.equal(err.stack, "this is an error stack");
       return done();
+    });
+  });
+  return it('call to github_auth_popup is works', function(done) {
+    var cs;
+    cs = new ClientState("GITHUB_CID");
+    return cs.github_auth_popup(function(err, provider_data) {
+      return cs.get("GET", "foobar", function(err, req) {
+        chai.assert.equal(req.url, 'https://GITHUB_CID.clientstate.io/GET/foobar');
+        return done();
+      });
     });
   });
 });
