@@ -1,5 +1,5 @@
 ClientState JS Client
-====================
+=====================
 
 Launch a clientstate-redis App from a clienstate-master instance,
 then you can use this library to talk to Redis from a static webpage.
